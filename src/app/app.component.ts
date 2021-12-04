@@ -7,5 +7,4 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'angular-electron';
-  textContent = 'This content is bound to the typescript object';
 }
