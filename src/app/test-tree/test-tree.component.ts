@@ -15,13 +15,17 @@ export class TestTreeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.addStep({
+    const step: TestStep = {
       action: 'Do a thing',
       results: ['thing happens', 'another thing happens'],
-    });
-    this.addStep({
+    };
+    this.addStep(step);
+
+    const step2: TestStep = {
       action: 'Do another thing',
       results: ['results occur'],
-    });
+      previous: step,
+    };
+    this.addStep(step2);
   }
 }
