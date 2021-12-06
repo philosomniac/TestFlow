@@ -2,7 +2,7 @@
   <mat-card-subtitle>Action</mat-card-subtitle>
   <mat-card-title>{{ action }}</mat-card-title>
   <mat-card-content>
-    <p>card content</p>
+    <p *ngIf="previous">Parent is: {{ previous.action }}</p>
   </mat-card-content>
   <mat-divider inset></mat-divider>
   <mat-card-actions>

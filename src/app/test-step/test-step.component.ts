@@ -11,6 +11,7 @@ export class TestStepComponent implements OnInit {
   textContent = '';
   action: string = '';
   results: string[] = [];
+  previous?: TestStep;
   @Output() addStepEvent = new EventEmitter<TestStep>();
 
   constructor() {}
@@ -20,10 +21,17 @@ export class TestStepComponent implements OnInit {
     if (this.teststep) {
       this.action = this.teststep.action;
       this.results = this.teststep.results;
+      if (this.teststep.previous) {
+        this.previous = this.teststep.previous;
+      }
     }
   }
 
   addStep(): void {
-    this.addStepEvent.emit({ action: 'new action', results: [] });
+    this.addStepEvent.emit({
+      action: 'new action',
+      results: [],
+      previous: this,
+    });
   }
 }
