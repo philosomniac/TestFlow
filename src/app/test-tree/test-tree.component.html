@@ -1,5 +1,8 @@
 <h2>Test tree:</h2>
 
-<!-- <div *ngFor="let teststep of teststeps">
- <app-test-step [teststep]="teststep"></app-test-step>
-</div> -->
+<div *ngFor="let step of steps">
+  <app-test-step
+    [teststep]="step"
+    (addStepEvent)="addStep($event)"
+  ></app-test-step>
+</div>
