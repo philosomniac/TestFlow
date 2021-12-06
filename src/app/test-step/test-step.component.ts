@@ -9,10 +9,12 @@ import { TestStep } from '../test-step';
 export class TestStepComponent implements OnInit {
   @Input() teststep?: TestStep;
   textContent = '';
+  id: number = 0;
   action: string = '';
   results: string[] = [];
   previous?: TestStep;
   @Output() addStepEvent = new EventEmitter<TestStep>();
+  @Output() removeStepEvent = new EventEmitter<TestStep>();
 
   constructor() {}
 
@@ -21,6 +23,7 @@ export class TestStepComponent implements OnInit {
     if (this.teststep) {
       this.action = this.teststep.action;
       this.results = this.teststep.results;
+      this.id = this.teststep.id;
       if (this.teststep.previous) {
         this.previous = this.teststep.previous;
       }
@@ -32,6 +35,11 @@ export class TestStepComponent implements OnInit {
       action: 'new action',
       results: [],
       previous: this,
+      id: 0,
     });
+  }
+
+  remove(): void {
+    this.removeStepEvent.emit(this);
   }
 }
