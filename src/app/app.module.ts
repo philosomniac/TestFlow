@@ -14,9 +14,10 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
 import { TestStepComponent } from './test-step/test-step.component';
+import { TestTreeComponent } from './test-tree/test-tree.component';
 
 @NgModule({
-  declarations: [AppComponent, TestStepComponent],
+  declarations: [AppComponent, TestStepComponent, TestTreeComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
