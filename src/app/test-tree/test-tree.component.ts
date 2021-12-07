@@ -17,7 +17,7 @@ export class TestTreeComponent implements OnInit {
     this.steps.push(step);
   }
   removeStep(step: TestStep): void {
-    this.steps = this.steps.filter((s) => s.action !== step.action);
+    this.steps = this.steps.filter((s) => s.id !== step.id);
   }
 
   private getNextId(): number {
