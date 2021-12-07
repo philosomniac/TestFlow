@@ -14,6 +14,11 @@ export class TestTreeComponent implements OnInit {
     if (!step.id) {
       step.id = this.getNextId();
     }
+    const previous = step.previous;
+    if (previous) {
+      const nextsteps = previous.nextsteps;
+      previous.nextsteps.push(step);
+    }
     this.steps.push(step);
   }
   removeStep(step: TestStep): void {
@@ -31,6 +36,7 @@ export class TestTreeComponent implements OnInit {
       id: this.getNextId(),
       action: 'Do a thing',
       results: ['thing happens', 'another thing happens'],
+      nextsteps: [],
     };
     this.addStep(step);
 
@@ -39,7 +45,26 @@ export class TestTreeComponent implements OnInit {
       action: 'Do another thing',
       results: ['results occur'],
       previous: step,
+      nextsteps: [],
     };
     this.addStep(step2);
+
+    const step3: TestStep = {
+      id: this.getNextId(),
+      action: 'Do a third thing',
+      results: ['different results occur'],
+      previous: step,
+      nextsteps: [],
+    };
+    this.addStep(step3);
+
+    const step4: TestStep = {
+      id: this.getNextId(),
+      action: 'Do a separate thing',
+      results: ['something else happens'],
+      previous: step2,
+      nextsteps: [],
+    };
+    this.addStep(step4);
   }
 }

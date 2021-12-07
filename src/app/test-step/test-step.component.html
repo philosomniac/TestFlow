@@ -2,7 +2,8 @@
   <mat-card-subtitle>Action: {{ id }}</mat-card-subtitle>
   <mat-card-title>{{ action }}</mat-card-title>
   <mat-card-content>
-    <p *ngIf="previous">Parent is: {{ previous.action }}</p>
+    <p *ngIf="previous">Previous is: {{ previous.action }}</p>
+    <p *ngIf="!previous">Previous is: (none)</p>
   </mat-card-content>
   <mat-divider inset></mat-divider>
   <mat-card-actions>
@@ -10,6 +11,10 @@
     <button mat-button (click)="addStep()">Add Child</button>
   </mat-card-actions>
   <mat-card-footer>
-    <p>Here is the footer content.</p>
+    <div *ngIf="nextsteps">
+      <div *ngFor="let step of nextsteps">
+        <p>Next step: {{ step.action }}</p>
+      </div>
+    </div>
   </mat-card-footer>
 </mat-card>

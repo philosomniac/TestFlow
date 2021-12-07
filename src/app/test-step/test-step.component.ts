@@ -6,13 +6,14 @@ import { TestStep } from '../test-step';
   templateUrl: './test-step.component.html',
   styleUrls: ['./test-step.component.css'],
 })
-export class TestStepComponent implements OnInit {
+export class TestStepComponent implements OnInit, TestStep {
   @Input() teststep?: TestStep;
   textContent = '';
   id: number = 0;
   action: string = '';
   results: string[] = [];
   previous?: TestStep;
+  nextsteps: TestStep[] = [];
   @Output() addStepEvent = new EventEmitter<TestStep>();
   @Output() removeStepEvent = new EventEmitter<TestStep>();
 
@@ -27,6 +28,7 @@ export class TestStepComponent implements OnInit {
       if (this.teststep.previous) {
         this.previous = this.teststep.previous;
       }
+      this.nextsteps = this.teststep.nextsteps;
     }
   }
 
@@ -36,6 +38,7 @@ export class TestStepComponent implements OnInit {
       results: [],
       previous: this,
       id: 0,
+      nextsteps: [],
     });
   }
 
