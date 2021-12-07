@@ -13,6 +13,7 @@ import { MatCardModule } from '@angular/material/card';
 
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
+import { MatGridListModule } from '@angular/material/grid-list';
 import { TestStepComponent } from './test-step/test-step.component';
 import { TestTreeComponent } from './test-tree/test-tree.component';
 
@@ -28,6 +29,7 @@ import { TestTreeComponent } from './test-tree/test-tree.component';
     MatCardModule,
     MatDividerModule,
     MatButtonModule,
+    MatGridListModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

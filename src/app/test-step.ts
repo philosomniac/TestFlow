@@ -4,4 +4,6 @@ export interface TestStep {
   results: string[];
   previous?: TestStep;
   nextsteps: TestStep[];
+  cols?: number;
+  rows?: number;
 }

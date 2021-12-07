@@ -1,11 +1,17 @@
 <h2>Test tree:</h2>
 
 <div class="container">
-  <div *ngFor="let step of steps">
-    <app-test-step
-      [teststep]="step"
-      (addStepEvent)="addStep($event)"
-      (removeStepEvent)="removeStep($event)"
-    ></app-test-step>
-  </div>
+  <mat-grid-list cols="3" rowHeight="300px">
+    <mat-grid-tile
+      *ngFor="let step of steps"
+      [colspan]="step.cols"
+      [rowspan]="step.rows"
+    >
+      <app-test-step
+        [teststep]="step"
+        (addStepEvent)="addStep($event)"
+        (removeStepEvent)="removeStep($event)"
+      ></app-test-step>
+    </mat-grid-tile>
+  </mat-grid-list>
 </div>

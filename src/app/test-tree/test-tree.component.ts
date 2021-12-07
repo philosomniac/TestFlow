@@ -8,7 +8,18 @@ import { TestStep } from '../test-step';
 })
 export class TestTreeComponent implements OnInit {
   steps: TestStep[] = [];
+
   constructor() {}
+
+  getCols() {
+    //TODO: Cols should be the depth of the tree
+    return 3;
+  }
+
+  getRows() {
+    //TODO: Rows should be the breadth of the tree
+    return 2;
+  }
 
   addStep(step: TestStep): void {
     if (!step.id) {
@@ -37,6 +48,8 @@ export class TestTreeComponent implements OnInit {
       action: 'Do a thing',
       results: ['thing happens', 'another thing happens'],
       nextsteps: [],
+      cols: 1,
+      rows: 2,
     };
     this.addStep(step);
 
@@ -46,6 +59,8 @@ export class TestTreeComponent implements OnInit {
       results: ['results occur'],
       previous: step,
       nextsteps: [],
+      cols: 1,
+      rows: 1,
     };
     this.addStep(step2);
 
@@ -55,6 +70,8 @@ export class TestTreeComponent implements OnInit {
       results: ['different results occur'],
       previous: step,
       nextsteps: [],
+      cols: 1,
+      rows: 1,
     };
     this.addStep(step3);
 
@@ -64,6 +81,8 @@ export class TestTreeComponent implements OnInit {
       results: ['something else happens'],
       previous: step2,
       nextsteps: [],
+      cols: 1,
+      rows: 1,
     };
     this.addStep(step4);
   }
