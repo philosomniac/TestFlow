@@ -1,4 +1,12 @@
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit,
+  Output,
+  EventEmitter,
+  ElementRef,
+  ViewChild,
+} from '@angular/core';
 import { TestStep } from '../test-step';
 
 @Component({
@@ -17,10 +25,13 @@ export class TestStepComponent implements OnInit, TestStep {
   @Output() addStepEvent = new EventEmitter<TestStep>();
   @Output() removeStepEvent = new EventEmitter<TestStep>();
 
+  @ViewChild('stepElement', { read: ElementRef })
+  @Output()
+  element!: ElementRef;
+
   constructor() {}
 
   ngOnInit(): void {
-    // this.textContent = 'This content is bound to the typescript object';
     if (this.teststep) {
       this.action = this.teststep.action;
       this.results = this.teststep.results;
