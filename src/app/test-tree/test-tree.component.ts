@@ -1,10 +1,9 @@
 import {
   AfterViewInit,
   Component,
-  ElementRef,
+  OnChanges,
   OnInit,
   QueryList,
-  ViewChild,
   ViewChildren,
 } from '@angular/core';
 import { TestStep } from '../test-step';
@@ -18,8 +17,9 @@ declare var LeaderLine: any;
   templateUrl: './test-tree.component.html',
   styleUrls: ['./test-tree.component.css'],
 })
-export class TestTreeComponent implements OnInit, AfterViewInit {
+export class TestTreeComponent implements OnInit, AfterViewInit, OnChanges {
   steps: TestStep[] = [];
+  lines: any[] = [];
 
   constructor() {}
 
@@ -45,7 +45,13 @@ export class TestTreeComponent implements OnInit, AfterViewInit {
     this.steps.push(step);
   }
   removeStep(step: TestStep): void {
+    for (const step of this.steps) {
+      step.nextsteps = step.nextsteps.filter((s) => s.id !== step.id);
+    }
+
     this.steps = this.steps.filter((s) => s.id !== step.id);
+    // this.steps.splice(this.steps.indexOf(step), 1);
+    // this.drawLines();
   }
 
   private getNextId(): number {
@@ -58,19 +64,34 @@ export class TestTreeComponent implements OnInit, AfterViewInit {
   elements!: QueryList<TestStepComponent>;
 
   private drawLines(): void {
+    for (const line of this.lines) {
+      line.remove();
+    }
+
+    this.lines = [];
+
     for (const element of this.elements) {
       const child_ids = element.nextsteps.map((step) => step.id);
       for (const id of child_ids) {
         const startElement = element.element.nativeElement;
         const endElement = this.elements.find((e) => e.id === id)?.element
           .nativeElement;
-        new LeaderLine(startElement, endElement);
+        // let line = ;
+        this.lines.push(new LeaderLine(startElement, endElement));
       }
     }
   }
 
   ngAfterViewInit(): void {
     this.drawLines();
+  }
+
+  ngOnChanges(): void {
+    // this.drawLines();
+  }
+
+  ngAfterViewChecked(): void {
+    // this.drawLines();
   }
 
   ngOnInit(): void {
