@@ -53,6 +53,12 @@ export class TestTreeComponent implements OnInit, AfterViewInit {
     this.steps = this.steps.filter((s) => s.id !== step.id);
     this.drawLines();
   }
+  removeLines(): void {
+    for (const line of this.lines) {
+      line.remove();
+    }
+    this.lines = [];
+  }
 
   private getNextId(): number {
     return this.steps.length > 0
@@ -65,11 +71,7 @@ export class TestTreeComponent implements OnInit, AfterViewInit {
 
   private drawLines(delay: number = 0): void {
     setTimeout(() => {
-      for (const line of this.lines) {
-        line.remove();
-      }
-
-      this.lines = [];
+      this.removeLines();
 
       for (const element of this.elements) {
         const child_ids = element.nextsteps.map((step) => step.id);
@@ -89,6 +91,8 @@ export class TestTreeComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.drawLines();
   }
+
+  ngOnDestroy(): void {}
 
   ngOnInit(): void {
     const step: TestStep = {
