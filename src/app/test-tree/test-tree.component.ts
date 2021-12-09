@@ -1,6 +1,7 @@
 import {
   AfterViewInit,
   Component,
+  Input,
   OnChanges,
   OnInit,
   QueryList,
@@ -17,8 +18,10 @@ declare var LeaderLine: any;
   templateUrl: './test-tree.component.html',
   styleUrls: ['./test-tree.component.css'],
 })
-export class TestTreeComponent implements OnInit, AfterViewInit, OnChanges {
+export class TestTreeComponent implements OnInit, AfterViewInit {
+  @Input()
   steps: TestStep[] = [];
+
   lines: any[] = [];
 
   constructor() {}
@@ -51,7 +54,7 @@ export class TestTreeComponent implements OnInit, AfterViewInit, OnChanges {
 
     this.steps = this.steps.filter((s) => s.id !== step.id);
     // this.steps.splice(this.steps.indexOf(step), 1);
-    // this.drawLines();
+    this.drawLines();
   }
 
   private getNextId(): number {
@@ -60,7 +63,7 @@ export class TestTreeComponent implements OnInit, AfterViewInit, OnChanges {
       : 1;
   }
 
-  @ViewChildren('stepElement')
+  @ViewChildren(TestStepComponent)
   elements!: QueryList<TestStepComponent>;
 
   private drawLines(): void {
@@ -77,7 +80,9 @@ export class TestTreeComponent implements OnInit, AfterViewInit, OnChanges {
         const endElement = this.elements.find((e) => e.id === id)?.element
           .nativeElement;
         // let line = ;
-        this.lines.push(new LeaderLine(startElement, endElement));
+        if (startElement && endElement) {
+          this.lines.push(new LeaderLine(startElement, endElement));
+        }
       }
     }
   }
@@ -86,13 +91,13 @@ export class TestTreeComponent implements OnInit, AfterViewInit, OnChanges {
     this.drawLines();
   }
 
-  ngOnChanges(): void {
-    // this.drawLines();
-  }
-
   ngAfterViewChecked(): void {
     // this.drawLines();
   }
+
+  // ngOnChanges(): void {
+  //   this.drawLines();
+  // }
 
   ngOnInit(): void {
     const step: TestStep = {
