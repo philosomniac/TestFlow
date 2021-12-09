@@ -1,14 +1,13 @@
 import {
   AfterViewInit,
   Component,
-  Input,
-  OnChanges,
   OnInit,
   QueryList,
   ViewChildren,
 } from '@angular/core';
 import { TestStep } from '../test-step';
 import { TestStepComponent } from '../test-step/test-step.component';
+import { StepService } from '../step.service';
 // const LeaderLine = require('leader-line');
 declare var LeaderLine: any;
 // import * as LeaderLine from 'LeaderLine';
@@ -22,7 +21,7 @@ export class TestTreeComponent implements OnInit, AfterViewInit {
   steps: TestStep[] = [];
   lines: any[] = [];
 
-  constructor() {}
+  constructor(private stepService: StepService) {}
 
   getCols() {
     //TODO: Cols should be the depth of the tree
@@ -88,54 +87,19 @@ export class TestTreeComponent implements OnInit, AfterViewInit {
     }, delay);
   }
 
+  getSteps(): void {
+    this.steps = this.stepService.getSteps();
+  }
+
   ngAfterViewInit(): void {
     this.drawLines();
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.removeLines();
+  }
 
   ngOnInit(): void {
-    const step: TestStep = {
-      id: this.getNextId(),
-      action: 'Do a thing',
-      results: ['thing happens', 'another thing happens'],
-      nextsteps: [],
-      cols: 1,
-      rows: 2,
-    };
-    this.addStep(step);
-
-    const step2: TestStep = {
-      id: this.getNextId(),
-      action: 'Do another thing',
-      results: ['results occur'],
-      previous: step,
-      nextsteps: [],
-      cols: 1,
-      rows: 1,
-    };
-    this.addStep(step2);
-
-    const step3: TestStep = {
-      id: this.getNextId(),
-      action: 'Do a third thing',
-      results: ['different results occur'],
-      previous: step,
-      nextsteps: [],
-      cols: 1,
-      rows: 1,
-    };
-    this.addStep(step3);
-
-    const step4: TestStep = {
-      id: this.getNextId(),
-      action: 'Do a separate thing',
-      results: ['something else happens'],
-      previous: step2,
-      nextsteps: [],
-      cols: 1,
-      rows: 1,
-    };
-    this.addStep(step4);
+    this.getSteps();
   }
 }
