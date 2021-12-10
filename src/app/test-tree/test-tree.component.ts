@@ -10,6 +10,7 @@ import { TestStepComponent } from '../test-step/test-step.component';
 import { StepService } from '../step.service';
 // const LeaderLine = require('leader-line');
 declare var LeaderLine: any;
+declare var PlainDraggable: any;
 // import * as LeaderLine from 'LeaderLine';
 
 @Component({
@@ -20,12 +21,35 @@ declare var LeaderLine: any;
 export class TestTreeComponent implements OnInit, AfterViewInit {
   steps: TestStep[] = [];
   lines: any[] = [];
+  depth: number = 0;
 
   constructor(private stepService: StepService) {}
 
-  getCols() {
+  updateDepth(): void {
+    this.depth = this.getCols();
+  }
+  getCols(): number {
     //TODO: Cols should be the depth of the tree
-    return 3;
+    function getColsRecursive(step: TestStep) {
+      if (!step) {
+        return 0;
+      }
+
+      if (!step.nextsteps) {
+        return 1;
+      }
+
+      let depths: number[] = [0];
+
+      for (let branch of step.nextsteps) {
+        let depth = getColsRecursive(branch);
+        depths.push(depth);
+      }
+      return 1 + Math.max(...depths);
+    }
+
+    let firstStep = this.steps[0];
+    return getColsRecursive(firstStep);
   }
 
   getRows() {
@@ -43,14 +67,19 @@ export class TestTreeComponent implements OnInit, AfterViewInit {
       previous.nextsteps.push(step);
     }
     this.steps.push(step);
+    this.updateDepth();
   }
   removeStep(step: TestStep): void {
-    for (const step of this.steps) {
-      step.nextsteps = step.nextsteps.filter((s) => s.id !== step.id);
+    for (const existing_step of this.steps) {
+      existing_step.nextsteps = existing_step.nextsteps.filter(
+        (s) => s.id !== step.id
+      );
     }
+    step.nextsteps = [];
 
     this.steps = this.steps.filter((s) => s.id !== step.id);
     this.drawLines();
+    this.updateDepth();
   }
   removeLines(): void {
     for (const line of this.lines) {
@@ -87,12 +116,30 @@ export class TestTreeComponent implements OnInit, AfterViewInit {
     }, delay);
   }
 
+  // private repositionLines(lines: any[]): void {
+  //   for (let line of lines) {
+  //     line.position();
+  //   }
+  // }
+
   getSteps(): void {
     this.steps = this.stepService.getSteps();
   }
 
   ngAfterViewInit(): void {
     this.drawLines();
+
+    // for (const element of this.elements) {
+    //   let draggable = new PlainDraggable(element.element.nativeElement);
+    //   draggable.containment = {
+    //     left: 0,
+    //     top: 0,
+    //     width: '100%',
+    //     height: '100%',
+    //   };
+    //   draggable.onDrag = this.repositionLines(this.lines);
+    //   draggable.oneMove = this.repositionLines(this.lines);
+    // }
   }
 
   ngOnDestroy(): void {
@@ -101,5 +148,6 @@ export class TestTreeComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.getSteps();
+    this.depth = this.getCols();
   }
 }

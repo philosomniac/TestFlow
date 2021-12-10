@@ -1,7 +1,7 @@
 <h2>Test tree:</h2>
 
 <div class="container">
-  <mat-grid-list cols="3" rowHeight="300px">
+  <mat-grid-list [cols]="depth" rowHeight="300px">
     <mat-grid-tile
       *ngFor="let step of steps"
       [colspan]="step.cols"
