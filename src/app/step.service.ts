@@ -11,4 +11,10 @@ export class StepService {
   getSteps(): TestStep[] {
     return STEPS;
   }
+
+  // getCols(): number{
+  //   function innerGetCols(step: TestStep[]) {
+
+  //   }
+  // }
 }
