@@ -22,6 +22,8 @@ export class TestTreeComponent implements OnInit, AfterViewInit {
   steps: TestStep[] = [];
   lines: any[] = [];
   depth: number = 0;
+  breadth: number = 0;
+  paths: number[][] = [];
 
   constructor(private stepService: StepService) {}
 
@@ -54,7 +56,31 @@ export class TestTreeComponent implements OnInit, AfterViewInit {
 
   getRows() {
     //TODO: Rows should be the breadth of the tree
-    return 2;
+    // return 2;
+    let paths: number[][] = [];
+
+    function getPathsRecursive(step: TestStep, stack: number[]) {
+      if (!step) {
+        return;
+      }
+
+      stack.push(step.id);
+
+      // let paths = [];
+      if (!step.nextsteps || step.nextsteps.length === 0) {
+        paths.push(Array(...stack));
+      }
+
+      for (let branch of step.nextsteps) {
+        getPathsRecursive(branch, stack);
+      }
+      stack.pop();
+    }
+
+    let firstStep = this.steps[0];
+    getPathsRecursive(firstStep, []);
+
+    return paths;
   }
 
   addStep(step: TestStep): void {
@@ -149,5 +175,7 @@ export class TestTreeComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.getSteps();
     this.depth = this.getCols();
+    this.paths = this.getRows();
+    this.breadth = this.paths.length;
   }
 }
