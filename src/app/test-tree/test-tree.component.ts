@@ -27,9 +27,14 @@ export class TestTreeComponent implements OnInit, AfterViewInit {
 
   constructor(private stepService: StepService) {}
 
-  updateDepth(): void {
+  updateState() {
     this.depth = this.getCols();
+    this.paths = [];
+    this.paths = this.getRows();
+    this.breadth = this.paths.length;
+    this.drawLines();
   }
+
   getCols(): number {
     //TODO: Cols should be the depth of the tree
     function getColsRecursive(step: TestStep) {
@@ -93,8 +98,9 @@ export class TestTreeComponent implements OnInit, AfterViewInit {
       previous.nextsteps.push(step);
     }
     this.steps.push(step);
-    this.updateDepth();
+    this.updateState();
   }
+
   removeStep(step: TestStep): void {
     for (const existing_step of this.steps) {
       existing_step.nextsteps = existing_step.nextsteps.filter(
@@ -104,9 +110,10 @@ export class TestTreeComponent implements OnInit, AfterViewInit {
     step.nextsteps = [];
 
     this.steps = this.steps.filter((s) => s.id !== step.id);
-    this.drawLines();
-    this.updateDepth();
+
+    this.updateState();
   }
+
   removeLines(): void {
     for (const line of this.lines) {
       line.remove();
@@ -174,8 +181,6 @@ export class TestTreeComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.getSteps();
-    this.depth = this.getCols();
-    this.paths = this.getRows();
-    this.breadth = this.paths.length;
+    this.updateState();
   }
 }
