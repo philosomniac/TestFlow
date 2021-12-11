@@ -24,6 +24,7 @@ export class TestTreeComponent implements OnInit, AfterViewInit {
   depth: number = 0;
   breadth: number = 0;
   paths: number[][] = [];
+  currentStyles: Record<string, string> = {};
 
   constructor(private stepService: StepService) {}
 
@@ -33,6 +34,14 @@ export class TestTreeComponent implements OnInit, AfterViewInit {
     this.paths = this.getRows();
     this.breadth = this.paths.length;
     this.drawLines();
+    this.setCurrentStyles();
+  }
+
+  setCurrentStyles() {
+    this.currentStyles = {
+      'grid-template-rows': `repeat(${this.breadth}, 1fr)`,
+      'grid-template-columns': `repeat(${this.depth}, 1fr)`,
+    };
   }
 
   getCols(): number {
