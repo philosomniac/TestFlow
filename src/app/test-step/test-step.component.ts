@@ -24,7 +24,6 @@ export class TestStepComponent implements OnInit, TestStep {
   nextsteps: TestStep[] = [];
   @Output() addStepEvent = new EventEmitter<TestStep>();
   @Output() removeStepEvent = new EventEmitter<TestStep>();
-
   @ViewChild('stepElement', { read: ElementRef })
   @Output()
   element!: ElementRef;

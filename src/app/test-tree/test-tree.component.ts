@@ -35,6 +35,36 @@ export class TestTreeComponent implements OnInit, AfterViewInit {
     this.breadth = this.paths.length;
     this.drawLines();
     this.setCurrentStyles();
+    this.updateStepPositions();
+  }
+
+  updateStepPositions() {
+    let currentSteps: TestStep[] = [];
+    currentSteps.push(this.steps[0]);
+    let nextSteps: TestStep[] = [];
+    let currentCol = 1;
+    let currentRow = 1;
+
+    while (currentSteps.length > 0) {
+      // for each level of steps
+      for (let step of currentSteps) {
+        //assign currentCol level
+        step.cols = currentCol;
+
+        //add everything in nextSteps array to next iteration
+        for (let nextstep of step.nextsteps) {
+          nextSteps.push(nextstep);
+        }
+      }
+      //put everything from nextsteps array into currentSteps array
+      currentSteps = [...nextSteps];
+
+      //clear nextsteps array
+      nextSteps = [];
+
+      //increment column number
+      currentCol++;
+    }
   }
 
   setCurrentStyles() {
