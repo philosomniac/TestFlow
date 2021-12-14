@@ -184,7 +184,15 @@ export class TestTreeComponent implements OnInit, AfterViewInit {
             .nativeElement;
           // let line = ;
           if (startElement && endElement) {
-            this.lines.push(new LeaderLine(startElement, endElement));
+            this.lines.push(
+              new LeaderLine(startElement, endElement, {
+                startSocket: 'right',
+                endSocket: 'left',
+                // endSocketGravity: 80,
+                // startSocketGravity: 200,
+                path: 'fluid',
+              })
+            );
           }
         }
       }
