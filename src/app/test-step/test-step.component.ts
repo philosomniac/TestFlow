@@ -22,6 +22,7 @@ export class TestStepComponent implements OnInit, TestStep {
   results: string[] = [];
   previous?: TestStep;
   nextsteps: TestStep[] = [];
+  // styles: Record<string, string> = {};
   @Output() addStepEvent = new EventEmitter<TestStep>();
   @Output() removeStepEvent = new EventEmitter<TestStep>();
   @ViewChild('stepElement', { read: ElementRef })
@@ -39,9 +40,26 @@ export class TestStepComponent implements OnInit, TestStep {
         this.previous = this.teststep.previous;
       }
       this.nextsteps = this.teststep.nextsteps;
+
+      // if (this.teststep.cols) {
+      //   this.styles = {
+      //     'grid-column': `${this.teststep.cols}`,
+      //   };
+      // }
     }
   }
 
+  // get styles() {
+  //   let styles = {};
+  //   if (this.teststep) {
+  //     if (this.teststep.cols) {
+  //       styles = {
+  //         'grid-column': `${this.teststep.cols}`,
+  //       };
+  //     }
+  //   }
+  //   return styles;
+  // }
   addStep(): void {
     this.addStepEvent.emit({
       action: 'new action',

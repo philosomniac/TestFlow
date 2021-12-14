@@ -50,6 +50,9 @@ export class TestTreeComponent implements OnInit, AfterViewInit {
       for (let step of currentSteps) {
         //assign currentCol level
         step.cols = currentCol;
+        step.styles = {
+          'grid-column': `${currentCol}`,
+        };
 
         //add everything in nextSteps array to next iteration
         for (let nextstep of step.nextsteps) {

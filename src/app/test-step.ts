@@ -6,4 +6,5 @@ export interface TestStep {
   nextsteps: TestStep[];
   cols?: number;
   rows?: number;
+  styles?: any;
 }
