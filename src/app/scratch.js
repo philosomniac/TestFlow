@@ -31,25 +31,41 @@ function getRows() {
 
   return paths;
 }
-let step1 = { id: "1", nextsteps: [] };
-steps.push(step1);
-// console.log(getRows());
-// getRows();
 
-let step2 = { id: "2", nextsteps: [] };
-step1.nextsteps.push(step2);
-steps.push(step2);
-// console.log(getRows());
-// getRows();
+function testGetRows() {
+  let step1 = { id: "1", nextsteps: [] };
+  steps.push(step1);
+  // console.log(getRows());
+  // getRows();
 
-let step3 = { id: "3", nextsteps: [] };
-step1.nextsteps.push(step3);
-steps.push(step3);
-// getRows();
+  let step2 = { id: "2", nextsteps: [] };
+  step1.nextsteps.push(step2);
+  steps.push(step2);
+  // console.log(getRows());
+  // getRows();
 
-let step4 = { id: "4", nextsteps: [] };
-step1.nextsteps.push(step4);
-steps.push(step4);
-// getRows();
-// console.log(paths);
-console.log(getRows());
+  let step3 = { id: "3", nextsteps: [] };
+  step1.nextsteps.push(step3);
+  steps.push(step3);
+  // getRows();
+
+  let step4 = { id: "4", nextsteps: [] };
+  step1.nextsteps.push(step4);
+  steps.push(step4);
+  // getRows();
+  // console.log(paths);
+  console.log(getRows());
+}
+
+function TestArrays() {
+  let arr1 = [1, 2, 3];
+  let arr2 = [4, 5, 6, 7];
+
+  arr1 = [...arr2];
+  console.log(arr1);
+  console.log(arr2);
+  arr2 = [];
+  console.log(arr2);
+}
+
+TestArrays();
