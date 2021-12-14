@@ -2,6 +2,7 @@
   display: grid;
   column-gap: 60px;
   row-gap: 5px;
+  grid-auto-flow: column dense;
 }
 
 /* .step{

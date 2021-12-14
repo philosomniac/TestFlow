@@ -33,9 +33,10 @@ export class TestTreeComponent implements OnInit, AfterViewInit {
     this.paths = [];
     this.paths = this.getRows();
     this.breadth = this.paths.length;
-    this.drawLines();
+
     this.setCurrentStyles();
     this.updateStepPositions();
+    this.drawLines();
   }
 
   updateStepPositions() {
@@ -52,6 +53,7 @@ export class TestTreeComponent implements OnInit, AfterViewInit {
         step.cols = currentCol;
         step.styles = {
           'grid-column': `${currentCol}`,
+          // 'grid-row': `${step.rows}`,
         };
 
         //add everything in nextSteps array to next iteration
@@ -106,26 +108,29 @@ export class TestTreeComponent implements OnInit, AfterViewInit {
     // return 2;
     let paths: number[][] = [];
 
-    function getPathsRecursive(step: TestStep, stack: number[]) {
+    function getPathsRecursive(step: TestStep, stack: number[], row: number) {
       if (!step) {
         return;
       }
 
       stack.push(step.id);
+      step.rows = row;
 
-      // let paths = [];
       if (!step.nextsteps || step.nextsteps.length === 0) {
         paths.push(Array(...stack));
       }
 
+      let currentRow = row;
       for (let branch of step.nextsteps) {
-        getPathsRecursive(branch, stack);
+        getPathsRecursive(branch, stack, currentRow);
+        currentRow++;
       }
       stack.pop();
     }
 
     let firstStep = this.steps[0];
-    getPathsRecursive(firstStep, []);
+    let row = 1;
+    getPathsRecursive(firstStep, [], row);
 
     return paths;
   }
