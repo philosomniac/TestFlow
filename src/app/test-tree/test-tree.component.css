@@ -1,6 +1,7 @@
 .container{
   display: grid;
-  grid-gap: 60px;
+  column-gap: 60px;
+  row-gap: 5px;
 }
 
 /* .step{
