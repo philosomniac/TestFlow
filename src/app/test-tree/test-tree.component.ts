@@ -24,6 +24,7 @@ export class TestTreeComponent implements OnInit, AfterViewInit {
   depth: number = 0;
   breadth: number = 0;
   paths: number[][] = [];
+  stepgrid: TestStep[][] = [];
   currentStyles: Record<string, string> = {};
 
   constructor(private stepService: StepService) {}
@@ -154,6 +155,11 @@ export class TestTreeComponent implements OnInit, AfterViewInit {
         (s) => s.id !== step.id
       );
     }
+
+    for (let nextstep of step.nextsteps) {
+      this.removeStep(nextstep);
+    }
+
     step.nextsteps = [];
 
     this.steps = this.steps.filter((s) => s.id !== step.id);
@@ -195,7 +201,7 @@ export class TestTreeComponent implements OnInit, AfterViewInit {
                 endSocket: 'left',
                 // endSocketGravity: 80,
                 // startSocketGravity: 200,
-                path: 'fluid',
+                path: 'grid',
               })
             );
           }
