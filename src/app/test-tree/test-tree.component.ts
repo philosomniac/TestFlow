@@ -9,8 +9,8 @@ import { TestStep } from '../test-step';
 import { TestStepComponent } from '../test-step/test-step.component';
 import { StepService } from '../step.service';
 // const LeaderLine = require('leader-line');
-declare var LeaderLine: any;
-declare var PlainDraggable: any;
+declare let LeaderLine: any;
+// declare let PlainDraggable: any;
 // import * as LeaderLine from 'LeaderLine';
 
 @Component({
@@ -21,13 +21,35 @@ declare var PlainDraggable: any;
 export class TestTreeComponent implements OnInit, AfterViewInit {
   steps: TestStep[] = [];
   lines: any[] = [];
-  depth: number = 0;
-  breadth: number = 0;
+  depth = 0;
+  breadth = 0;
   paths: number[][] = [];
   stepgrid: TestStep[][] = [];
   currentStyles: Record<string, string> = {};
 
   constructor(private stepService: StepService) {}
+
+  addToGrid(step: TestStep, requestedcol: number, requestedrow: number) {
+    const col = requestedcol;
+    const row = requestedrow;
+
+    // if (this.stepgrid === undefined) {
+    //   this.stepgrid = [];
+    // }
+    // while (this.stepgrid[col][row] !== undefined) {
+    //   row++;
+    // }
+
+    // // this.stepgrid[col][row] = step;
+    // // step.cols = col;
+    // step.rows = row;
+
+    return { col: col, row: row };
+  }
+
+  clearGrid() {
+    this.stepgrid = [];
+  }
 
   updateState() {
     this.depth = this.getCols();
@@ -36,29 +58,40 @@ export class TestTreeComponent implements OnInit, AfterViewInit {
     this.breadth = this.paths.length;
 
     this.setCurrentStyles();
+    this.clearGrid();
     this.updateStepPositions();
     this.drawLines();
   }
 
   updateStepPositions() {
+    if (this.steps.length < 1) {
+      return;
+    }
     let currentSteps: TestStep[] = [];
     currentSteps.push(this.steps[0]);
     let nextSteps: TestStep[] = [];
     let currentCol = 1;
-    let currentRow = 1;
+    // let currentRow = 1;
 
     while (currentSteps.length > 0) {
       // for each level of steps
-      for (let step of currentSteps) {
+      for (const step of currentSteps) {
         //assign currentCol level
         step.cols = currentCol;
+        let requestedRow = 1;
+        if (step.previous) {
+          if (step.previous.rows) {
+            requestedRow = step.previous.rows;
+          }
+        }
+        const position = this.addToGrid(step, currentCol, requestedRow);
         step.styles = {
           'grid-column': `${currentCol}`,
-          // 'grid-row': `${step.rows}`,
+          'grid-row': `${position.row}`,
         };
 
         //add everything in nextSteps array to next iteration
-        for (let nextstep of step.nextsteps) {
+        for (const nextstep of step.nextsteps) {
           nextSteps.push(nextstep);
         }
       }
@@ -91,23 +124,23 @@ export class TestTreeComponent implements OnInit, AfterViewInit {
         return 1;
       }
 
-      let depths: number[] = [0];
+      const depths: number[] = [0];
 
-      for (let branch of step.nextsteps) {
-        let depth = getColsRecursive(branch);
+      for (const branch of step.nextsteps) {
+        const depth = getColsRecursive(branch);
         depths.push(depth);
       }
       return 1 + Math.max(...depths);
     }
 
-    let firstStep = this.steps[0];
+    const firstStep = this.steps[0];
     return getColsRecursive(firstStep);
   }
 
   getRows() {
     //TODO: Rows should be the breadth of the tree
     // return 2;
-    let paths: number[][] = [];
+    const paths: number[][] = [];
 
     function getPathsRecursive(step: TestStep, stack: number[], row: number) {
       if (!step) {
@@ -122,15 +155,15 @@ export class TestTreeComponent implements OnInit, AfterViewInit {
       }
 
       let currentRow = row;
-      for (let branch of step.nextsteps) {
+      for (const branch of step.nextsteps) {
         getPathsRecursive(branch, stack, currentRow);
         currentRow++;
       }
       stack.pop();
     }
 
-    let firstStep = this.steps[0];
-    let row = 1;
+    const firstStep = this.steps[0];
+    const row = 1;
     getPathsRecursive(firstStep, [], row);
 
     return paths;
@@ -142,13 +175,14 @@ export class TestTreeComponent implements OnInit, AfterViewInit {
     }
     const previous = step.previous;
     if (previous) {
-      const nextsteps = previous.nextsteps;
+      // const nextsteps = previous.nextsteps;
       previous.nextsteps.push(step);
     }
     this.steps.push(step);
     this.updateState();
   }
 
+  // TODO: show confirmation dialog if more than one step will be removed
   removeStep(step: TestStep): void {
     for (const existing_step of this.steps) {
       existing_step.nextsteps = existing_step.nextsteps.filter(
@@ -156,7 +190,7 @@ export class TestTreeComponent implements OnInit, AfterViewInit {
       );
     }
 
-    for (let nextstep of step.nextsteps) {
+    for (const nextstep of step.nextsteps) {
       this.removeStep(nextstep);
     }
 
@@ -183,7 +217,7 @@ export class TestTreeComponent implements OnInit, AfterViewInit {
   @ViewChildren(TestStepComponent)
   elements!: QueryList<TestStepComponent>;
 
-  private drawLines(delay: number = 0): void {
+  private drawLines(delay = 0): void {
     setTimeout(() => {
       this.removeLines();
 

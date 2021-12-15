@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TestTreeComponent } from './test-tree.component';
 
-import { TestStep } from '../test-step';
+// import { TestStep } from '../test-step';
 
 describe('TestTreeComponent', () => {
   let component: TestTreeComponent;
@@ -17,7 +17,13 @@ describe('TestTreeComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TestTreeComponent);
     component = fixture.componentInstance;
+
     fixture.detectChanges();
+
+    //remove all test steps except the first one
+    if (component.steps.length > 1) {
+      component.steps.splice(1);
+    }
   });
 
   it('should create', () => {
@@ -30,12 +36,8 @@ describe('TestTreeComponent', () => {
 
   it('should add a test step when addStep event fires', () => {
     const currentLength = component.steps.length;
-    component.addStep({
-      id: 6,
-      action: "here's an action!",
-      results: ["here's results"],
-      nextsteps: [],
-    });
+    const existingStep = component.steps[0];
+    component.addStep(existingStep);
     expect(component.steps.length).toEqual(currentLength + 1);
   });
 
