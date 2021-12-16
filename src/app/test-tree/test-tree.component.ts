@@ -9,9 +9,12 @@ import { TestStep } from '../test-step';
 import { TestStepComponent } from '../test-step/test-step.component';
 import { StepService } from '../step.service';
 // const LeaderLine = require('leader-line');
-declare let LeaderLine: any;
+
 // declare let PlainDraggable: any;
 // import * as LeaderLine from 'LeaderLine';
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+declare let LeaderLine: any;
 
 @Component({
   selector: 'app-test-tree',
@@ -20,6 +23,7 @@ declare let LeaderLine: any;
 })
 export class TestTreeComponent implements OnInit, AfterViewInit {
   steps: TestStep[] = [];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   lines: any[] = [];
   depth = 0;
   breadth = 0;
