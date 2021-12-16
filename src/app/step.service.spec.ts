@@ -21,4 +21,9 @@ describe('StepService', () => {
   it('should have the first step with an action', () => {
     expect(service.getSteps()[0].action).toEqual('Do a thing');
   });
+
+  it('should clear all steps when clearsteps method called', () => {
+    service.clearSteps();
+    expect(service.getSteps()).toEqual([]);
+  });
 });

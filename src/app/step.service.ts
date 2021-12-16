@@ -6,15 +6,21 @@ import { STEPS } from './mock-steps';
   providedIn: 'root',
 })
 export class StepService {
-  constructor() {}
-
-  getSteps(): TestStep[] {
-    return STEPS;
+  clearSteps() {
+    // throw new Error('Method not implemented.');
+    this.steps = [];
+    return this.steps;
+  }
+  steps: TestStep[] = [];
+  constructor() {
+    this.initialize();
   }
 
-  // getCols(): number{
-  //   function innerGetCols(step: TestStep[]) {
+  initialize() {
+    this.steps = STEPS;
+  }
 
-  //   }
-  // }
+  getSteps(): TestStep[] {
+    return this.steps;
+  }
 }
