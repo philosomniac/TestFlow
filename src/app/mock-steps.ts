@@ -3,7 +3,7 @@ import { TestStep } from './test-step';
 export const STEPS: TestStep[] = generateSteps();
 
 function generateSteps(): TestStep[] {
-  let steps: TestStep[] = [];
+  const steps: TestStep[] = [];
 
   function addStep(step: TestStep): void {
     if (!step.id) {
@@ -11,7 +11,7 @@ function generateSteps(): TestStep[] {
     }
     const previous = step.previous;
     if (previous) {
-      const nextsteps = previous.nextsteps;
+      // const nextsteps = previous.nextsteps;
       previous.nextsteps.push(step);
     }
     steps.push(step);
