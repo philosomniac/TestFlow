@@ -1,7 +1,6 @@
 import {
   Component,
   Input,
-  OnInit,
   Output,
   EventEmitter,
   ElementRef,
@@ -14,63 +13,38 @@ import { TestStep } from '../test-step';
   templateUrl: './test-step.component.html',
   styleUrls: ['./test-step.component.css'],
 })
-export class TestStepComponent implements OnInit, TestStep {
-  @Input() teststep?: TestStep;
-  textContent = '';
-  id: number = 0;
-  action: string = '';
-  results: string[] = [];
-  previous?: TestStep;
-  nextsteps: TestStep[] = [];
-  // styles: Record<string, string> = {};
+export class TestStepComponent {
+  @Input()
+  teststep!: TestStep;
   @Output() addStepEvent = new EventEmitter<TestStep>();
   @Output() removeStepEvent = new EventEmitter<TestStep>();
   @ViewChild('stepElement', { read: ElementRef })
   @Output()
   element!: ElementRef;
-
-  constructor() {}
+  textContent = '';
 
   ngOnInit(): void {
-    if (this.teststep) {
-      this.action = this.teststep.action;
-      this.results = this.teststep.results;
-      this.id = this.teststep.id;
-      if (this.teststep.previous) {
-        this.previous = this.teststep.previous;
-      }
-      this.nextsteps = this.teststep.nextsteps;
-
-      // if (this.teststep.cols) {
-      //   this.styles = {
-      //     'grid-column': `${this.teststep.cols}`,
-      //   };
-      // }
+    if (this.teststep === undefined) {
+      this.teststep = {
+        id: 0,
+        action: '',
+        results: [],
+        nextsteps: [],
+      };
     }
   }
 
-  // get styles() {
-  //   let styles = {};
-  //   if (this.teststep) {
-  //     if (this.teststep.cols) {
-  //       styles = {
-  //         'grid-column': `${this.teststep.cols}`,
-  //       };
-  //     }
-  //   }
-  //   return styles;
-  // }
   addStep(): void {
     this.addStepEvent.emit({
       action: 'new action',
       results: [],
-      previous: this,
+      previous: this.teststep,
       id: 0,
       nextsteps: [],
     });
   }
 
   remove(): void {
-    this.removeStepEvent.emit(this);
+    this.removeStepEvent.emit(this.teststep);
   }
 }

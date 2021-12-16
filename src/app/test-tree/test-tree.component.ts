@@ -222,11 +222,11 @@ export class TestTreeComponent implements OnInit, AfterViewInit {
       this.removeLines();
 
       for (const element of this.elements) {
-        const child_ids = element.nextsteps.map((step) => step.id);
+        const child_ids = element.teststep.nextsteps.map((step) => step.id);
         for (const id of child_ids) {
           const startElement = element.element.nativeElement;
-          const endElement = this.elements.find((e) => e.id === id)?.element
-            .nativeElement;
+          const endElement = this.elements.find((e) => e.teststep.id === id)
+            ?.element.nativeElement;
           // let line = ;
           if (startElement && endElement) {
             this.lines.push(
