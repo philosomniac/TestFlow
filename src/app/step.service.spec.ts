@@ -60,4 +60,34 @@ describe('StepService', () => {
     const stepIdsSet = new Set(stepids);
     expect(stepids.length).toEqual(stepIdsSet.size);
   });
+
+  it('should remove a specific step when the remove step method is called', () => {
+    const previousSteps = service.getSteps();
+    const testStep = previousSteps[previousSteps.length - 1];
+    service.removeStep(testStep);
+    expect(service.getSteps()).not.toContain(testStep);
+    expect(service.getSteps().map((step) => step.id)).not.toContain(
+      testStep.id
+    );
+  });
+
+  it('should recursively remove all child steps from removed step', () => {
+    const step1 = service.getSteps()[0];
+    const step2 = step1.nextsteps[0];
+    const step3 = step2.nextsteps[0];
+
+    service.removeStep(step1);
+    expect(service.getSteps()).not.toContain(step1);
+    expect(service.getSteps()).not.toContain(step2);
+    expect(service.getSteps()).not.toContain(step3);
+  });
+
+  it('should remove references to removed steps from parent step', () => {
+    const step1 = service.getSteps()[0];
+    const step2 = step1.nextsteps[0];
+    // const step3 = step2.nextsteps[0];
+
+    service.removeStep(step2);
+    expect(step1.nextsteps).not.toContain(step2);
+  });
 });

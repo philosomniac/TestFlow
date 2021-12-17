@@ -1,12 +1,48 @@
 import { Injectable } from '@angular/core';
 import { TestStep } from './test-step';
-import { STEPS } from './mock-steps';
+import { generateSteps } from './mock-steps';
 
 @Injectable({
   providedIn: 'root',
 })
 export class StepService {
+  removeStep(stepToRemove: TestStep) {
+    this.steps = this.steps.filter((step) => step !== stepToRemove);
+
+    if (stepToRemove.previous !== undefined) {
+      stepToRemove.previous.nextsteps = stepToRemove.previous.nextsteps.filter(
+        (step) => step !== stepToRemove
+      );
+    }
+
+    if (
+      stepToRemove.nextsteps !== undefined &&
+      stepToRemove.nextsteps.length > 0
+    ) {
+      for (const step of stepToRemove.nextsteps) {
+        this.removeStep(step);
+      }
+    }
+  }
   steps: TestStep[] = [];
+
+  getSteps(): TestStep[] {
+    return this.steps;
+  }
+
+  addStep(previousStep: TestStep): TestStep {
+    const newStep = this.generateNewStep();
+    previousStep.nextsteps.push(newStep);
+    newStep.previous = previousStep;
+    this.steps.push(newStep);
+    return newStep;
+  }
+
+  clearSteps() {
+    this.steps = [];
+    return this.steps;
+  }
+
   private generateNewStep(): TestStep {
     return {
       id: this.getNextId(),
@@ -22,28 +58,12 @@ export class StepService {
       : 1;
   }
 
-  addStep(previousStep: TestStep): TestStep {
-    const newStep = this.generateNewStep();
-    previousStep.nextsteps.push(newStep);
-    newStep.previous = previousStep;
-    this.steps.push(newStep);
-    return newStep;
-  }
-  clearSteps() {
-    // throw new Error('Method not implemented.');
-    this.steps = [];
-    return this.steps;
-  }
-
   constructor() {
     this.initialize();
   }
 
   initialize() {
-    this.steps = STEPS;
-  }
-
-  getSteps(): TestStep[] {
-    return this.steps;
+    this.steps = [];
+    this.steps = generateSteps();
   }
 }
