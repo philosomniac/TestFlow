@@ -8,10 +8,6 @@ import {
 import { TestStep } from '../test-step';
 import { TestStepComponent } from '../test-step/test-step.component';
 import { StepService } from '../step.service';
-// const LeaderLine = require('leader-line');
-
-// declare let PlainDraggable: any;
-// import * as LeaderLine from 'LeaderLine';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare let LeaderLine: any;
@@ -231,7 +227,7 @@ export class TestTreeComponent implements OnInit, AfterViewInit {
           const startElement = element.element.nativeElement;
           const endElement = this.elements.find((e) => e.teststep.id === id)
             ?.element.nativeElement;
-          // let line = ;
+
           if (startElement && endElement) {
             this.lines.push(
               new LeaderLine(startElement, endElement, {
@@ -248,30 +244,12 @@ export class TestTreeComponent implements OnInit, AfterViewInit {
     }, delay);
   }
 
-  // private repositionLines(lines: any[]): void {
-  //   for (let line of lines) {
-  //     line.position();
-  //   }
-  // }
-
   getSteps(): void {
     this.steps = this.stepService.getSteps();
   }
 
   ngAfterViewInit(): void {
     this.drawLines();
-
-    // for (const element of this.elements) {
-    //   let draggable = new PlainDraggable(element.element.nativeElement);
-    //   draggable.containment = {
-    //     left: 0,
-    //     top: 0,
-    //     width: '100%',
-    //     height: '100%',
-    //   };
-    //   draggable.onDrag = this.repositionLines(this.lines);
-    //   draggable.oneMove = this.repositionLines(this.lines);
-    // }
   }
 
   ngOnDestroy(): void {
